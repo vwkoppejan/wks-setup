@@ -1,17 +1,17 @@
 ---
-- name: Download exa artifacts
+- name: Download eza artifacts
   import_tasks: _download_artifact.yml
   vars:
-    tool_name: exa
-    artifact_version: "{{ exa_version }}"
+    tool_name: eza
+    artifact_version: "{{ eza_version }}"
     artifact_type: archive
-    artifact_url: "https://github.com/ogham/exa/releases/download/{{ exa_version }}/exa-linux-x86_64-{{ exa_version }}.zip"
-    artifact_creates: bin/exa
+    artifact_url: "https://github.com/eza-community/eza/releases/download/{{ eza_version }}/eza_x86_64-unknown-linux-gnu.tar.gz"
+    artifact_creates: eza
 
-- name: Symlink exa binaries
+- name: Symlink eza binaries
   import_tasks: _symlink_binaries.yml
   vars:
-    tool_name: exa
+    tool_name: eza
     binary_symlinks:
-      - src: bin/exa
-        dest: exa
+      - src: eza
+        dest: eza
