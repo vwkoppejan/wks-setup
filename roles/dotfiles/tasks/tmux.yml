@@ -1,0 +1,26 @@
+---
+- name: Create tmux plugin directory
+  file:
+    path: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: "0755"
+  become: false
+
+- name: Add dotfiles from templates
+  copy:
+    src: "files/tmux.conf"
+    dest: "{{ ansible_env.HOME }}/.tmux.conf"
+    owner: "{{ ansible_user_id }}"
+    mode: "0644"
+
+- name: Install tpm (Tmux Plugin Manager)
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+    version: master
+  become: false
+
+- name: Install tmux plugins via tpm
+  command: "{{ ansible_env.HOME }}/.tmux/plugins/tpm/bin/install_plugins"
+  become: false

@@ -1,0 +1,43 @@
+---
+- name: Touch huslog file
+  file:
+    path: "{{ ansible_env.HOME }}/.huslogin"
+    state: touch
+    owner: "{{ ansible_user_id }}"
+    mode: "0644"
+  become: false
+
+- name: Setup vim configuration and dotfiles
+  import_tasks: vim.yml
+  become: false
+
+- name: Setup tmux configuration
+  import_tasks: tmux.yml
+  become: false
+
+- name: Copy bash_functions
+  copy:
+    src: bash_functions
+    dest: "{{ ansible_env.HOME }}/.bash_functions"
+    owner: "{{ ansible_user_id }}"
+    mode: "0644"
+  become: false
+
+- name: Template gitconfig
+  template:
+    src: gitconfig.j2
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    owner: "{{ ansible_user_id }}"
+    mode: "0644"
+  become: false
+
+- name: Append user settings to bashrc
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: "{{ lookup('file', 'bashrc') }}"
+    owner: "{{ ansible_user_id }}"
+    mode: "0644"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    insertafter : EOF
+  become: false
+

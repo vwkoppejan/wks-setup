@@ -1,0 +1,10 @@
+[user]
+        name = {{ git_name }}
+        email = {{ git_email }}
+[alias]
+        lol = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    cm = commit -m
+
+[core]
+        editor = vim
+        excludesfile = {{ ansible_env.HOME }}/.gitignore

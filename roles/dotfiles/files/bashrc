@@ -1,0 +1,64 @@
+# increase bash history size
+HISTSIZE=10000
+HISTFILESIZE=20000
+
+# show git branch in console
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+# check for WSL and set adaptive PS1 host display if needed
+if [ -f /etc/wsl.conf ]; then
+    _os_name=$(. /etc/os-release && echo "$ID")
+    _os_version=$(. /etc/os-release && echo "$VERSION_ID")
+    _PS1_HOST="wsl-${_os_name}-${_os_version}"
+else
+    _PS1_HOST="$(hostname -s)"
+fi
+_c_host="\[$(tput setaf 6)\]"
+_c_path="\[$(tput setaf 2)\]"
+_c_git="\[$(tput setaf 1)\]"
+_c_reset="\[$(tput sgr0)\]"
+export PS1="\u@${_c_host}${_PS1_HOST}${_c_reset} ${_c_path}\w ${_c_git}\$(parse_git_branch)${_c_reset}\n$ "
+
+# custom functions
+source ~/.bash_functions
+
+# set folders
+export SOFTWARE=$HOME/software
+
+# store git credentials in Git's in-memory credential cache
+export GCM_CREDENTIAL_STORE=cache
+
+# GO paths
+export PATH=$PATH:~/go/bin
+
+# disable telemetry for aws-sam-cli
+export SAM_CLI_TELEMETRY=0
+
+# enable aws autocompletion
+complete -C "~/software/aws-cli/install/v2/current/bin/aws_completer" aws
+
+# enable poetry autocompletions
+source ~/.poetry_completions
+
+# terraform autocomplete
+complete -C ~/software/terraform terraform
+
+# aliasses
+alias cat='ccat'
+alias jupl='jupyter-lab --no-browser --port=42424'
+alias k='kubectl'
+alias kaf='k apply -f'
+alias ll='exa -lhH'
+alias lla='exa -alhH'
+alias ls='exa --grid -hH'
+alias myhtop='htop -u $USER'
+alias sandbox="source ~/software/python/venvs/sandbox/bin/activate"
+alias sb='source ~/.bashrc'
+alias tf='terraform'
+alias tfa='tf apply'
+alias tfp='tf plan'
+alias tma='tmux_attach'
+alias tofp='tmux_open_folder_pane'
+alias tofw='tmux_open_folder_window'

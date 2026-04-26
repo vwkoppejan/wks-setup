@@ -1,0 +1,20 @@
+# open new tmux session or attach to the one given
+tmux_attach () {
+    if [[ $# -eq 0 ]]; then
+        # No argument provided, create a new tmux session
+        tmux new-session
+    else
+        # Attach to the provided argument as a session name or session ID
+        tmux attach-session -t "$1" || echo "No session found with name or ID: $1"
+    fi
+}
+
+# open folder in new tmux is pane
+tmux_open_folder_split () {
+    tmux split-window -h "cd $1; exec bash"
+}
+
+# open folder in new tmux window
+tmux_open_folder_window () {
+    tmux new-window "cd $1; exec bash"
+}

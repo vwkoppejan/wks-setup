@@ -1,0 +1,51 @@
+"------------------------------------------------------------------------------
+" VWK vim settings file
+"------------------------------------------------------------------------------
+" stuff to make stuff work
+    set nocompatible
+    set backspace=indent,eol,start
+" colorscheme and higlighting
+    let mysyntaxfile = "~/.vim/mysyntax.vim"
+    syntax on
+    set bg=dark
+" enable file type and indentation plugin
+    filetype plugin indent on
+" Display line numbers on the left
+    set number
+" disable auto commenting with paste on next line
+    set paste
+" Set rulers
+    set colorcolumn=80
+" higlight current line
+    set cursorline
+" set tab to 4 spaces
+    set expandtab
+    set tabstop=4
+    set softtabstop=4
+    set shiftwidth=4
+
+" vim-plug
+call plug#begin()
+
+Plug 'preservim/nerdtree'
+Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'hashivim/vim-terraform'
+
+call plug#end()
+
+" set color scheme and enable transparent background
+" Only set colorscheme if it exists (i.e. after plugins are installed)
+try
+  colorscheme gruvbox
+catch /^Vim\%((\a\+)\)\=:E185/
+  " gruvbox not installed yet, skip silently
+endtry
+hi Normal guibg=NONE ctermbg=NONE
+
+" set better colors for cursor line and colorcolumn
+hi ColorColumn ctermbg=DarkGray
+hi CursorLine ctermbg=DarkGray
+
+let g:airline_powerline_fonts = 0
+let g:airline#extensions#tmuxline#enabled = 0
