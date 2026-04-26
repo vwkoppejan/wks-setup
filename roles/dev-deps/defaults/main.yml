@@ -15,10 +15,28 @@ common_utils_packages:
 
 debian_utils_packages:
   - build-essential
+  - libbz2-dev
+  - libffi-dev
+  - liblzma-dev
   - libncurses-dev
+  - libreadline-dev
+  - libsqlite3-dev
+  - libssl-dev
   - python3-venv
+  - tk-dev
+  - uuid-dev
+  - zlib1g-dev
 
 redhat_utils_packages:
   - "@Development Tools"
+  - bzip2-devel
   - epel-release
+  - libffi-devel
   - ncurses-devel
+  - openssl-devel
+  - readline-devel
+  - sqlite-devel
+  - tk-devel
+  - uuid-devel
+  - xz-devel
+  - zlib-devel
