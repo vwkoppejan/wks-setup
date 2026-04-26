@@ -32,8 +32,8 @@ Ansible playbook to set up a development environment on a fresh Linux or WSL ins
 To run only a specific role, use `--tags`:
 
 ```bash
-ansible-playbook -i inventory/hosts.ini playbook.yml -K --tags dev-tools
-ansible-playbook -i inventory/hosts.ini playbook.yml --tags dev-deps
+ansible-playbook -i inventory/hosts.ini playbook.yml -K --tags dev-deps
+ansible-playbook -i inventory/hosts.ini playbook.yml --tags dev-tools
 ansible-playbook -i inventory/hosts.ini playbook.yml --tags dotfiles -e "git_name=< your name>" -e "git_email=<your email adress>"
 ```
 
