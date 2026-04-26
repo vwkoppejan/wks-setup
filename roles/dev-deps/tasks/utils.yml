@@ -1,0 +1,19 @@
+---
+- name: Install Debian/Ubuntu specific utils
+  when: ansible_os_family == "Debian"
+  apt:
+    name: "{{ debian_utils_packages }}"
+    state: present
+    update_cache: true
+
+- name: Install RedHat/CentOS specific utils
+  when: ansible_os_family == "RedHat"
+  yum:
+    name: "{{ redhat_utils_packages }}"
+    state: present
+    update_cache: true
+
+- name: Install common utils
+  ansible.builtin.package:
+    name: "{{ common_utils_packages }}"
+    state: present

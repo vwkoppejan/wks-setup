@@ -1,0 +1,9 @@
+---
+# Systemwide installs
+- name: Install utility packages
+  import_tasks: utils.yml
+  become: true
+
+- name: Install Docker
+  import_tasks: docker/main.yml
+  become: true

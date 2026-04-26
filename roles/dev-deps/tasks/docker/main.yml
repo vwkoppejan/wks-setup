@@ -1,0 +1,14 @@
+---
+- name: Install Docker on Debian-based systems
+  import_tasks: debian.yml
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Install Docker on Red Hat-based systems
+  import_tasks: redhat.yml
+  when: ansible_facts['os_family'] == 'RedHat'
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ devtools_user }}"
+    groups: docker
+    append: yes

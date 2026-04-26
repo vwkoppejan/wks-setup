@@ -1,0 +1,24 @@
+
+common_utils_packages:
+  - curl
+  - git
+  - htop
+  - jq
+  - net-tools
+  - tar
+  - tmux
+  - traceroute
+  - tree
+  - unzip
+  - vim
+  - wget
+
+debian_utils_packages:
+  - build-essential
+  - libncurses-dev
+  - python3-venv
+
+redhat_utils_packages:
+  - "@Development Tools"
+  - epel-release
+  - ncurses-devel
