@@ -1,0 +1,10 @@
+---
+- name: Setup a development environment
+  hosts: workstations
+  roles:
+    - role: roles/dev-deps
+      tags:  dev-deps
+    - role: roles/dev-tools
+      tags:  dev-tools
+    - role: roles/dotfiles
+      tags:  dotfiles
