@@ -32,11 +32,11 @@ redhat_utils_packages:
   - bzip2-devel
   - epel-release
   - libffi-devel
+  - libuuid-devel
   - ncurses-devel
   - openssl-devel
   - readline-devel
   - sqlite-devel
   - tk-devel
-  - uuid-devel
   - xz-devel
   - zlib-devel
