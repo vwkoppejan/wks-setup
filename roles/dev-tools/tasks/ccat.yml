@@ -1,0 +1,17 @@
+---
+- name: Download ccat artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: ccat
+    artifact_version: "{{ ccat_version }}"
+    artifact_type: archive
+    artifact_url: "https://github.com/owenthereal/ccat/releases/download/v{{ ccat_version }}/linux-amd64-{{ ccat_version }}.tar.gz"
+    artifact_creates: "linux-amd64-{{ ccat_version }}/ccat"
+
+- name: Symlink ccat binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: ccat
+    binary_symlinks:
+      - src: "linux-amd64-{{ ccat_version }}/ccat"
+        dest: ccat

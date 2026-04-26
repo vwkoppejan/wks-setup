@@ -1,0 +1,50 @@
+---
+- name: Create {{ tool_name }} directory
+  file:
+    path: "{{ software_dir }}/{{ tool_name }}"
+    state: directory
+    owner: "{{ devtools_user }}"
+
+- name: Check {{ tool_name }} version marker
+  stat:
+    path: "{{ software_dir }}/{{ tool_name }}/.artifact-{{ artifact_version }}.installed"
+  register: artifact_version_marker
+
+- name: Download {{ tool_name }} binary
+  get_url:
+    url: "{{ artifact_url }}"
+    dest: "{{ software_dir }}/{{ tool_name }}/{{ artifact_dest }}"
+    mode: "{{ artifact_mode | default('0755') }}"
+    owner: "{{ devtools_user }}"
+  when:
+    - artifact_type == "binary"
+    - not artifact_version_marker.stat.exists
+
+- name: Download and extract {{ tool_name }} archive
+  unarchive:
+    src: "{{ artifact_url }}"
+    dest: "{{ software_dir }}/{{ tool_name }}"
+    remote_src: yes
+    owner: "{{ devtools_user }}"
+    creates: "{{ software_dir }}/{{ tool_name }}/{{ artifact_creates }}"
+  when:
+    - artifact_type == "archive"
+    - not artifact_version_marker.stat.exists
+
+- name: Download {{ tool_name }} file
+  get_url:
+    url: "{{ artifact_url }}"
+    dest: "{{ software_dir }}/{{ tool_name }}/{{ artifact_creates }}"
+    mode: "0644"
+    owner: "{{ devtools_user }}"
+  when:
+    - artifact_type == "file"
+    - not artifact_version_marker.stat.exists
+
+- name: Write {{ tool_name }} version marker
+  file:
+    path: "{{ software_dir }}/{{ tool_name }}/.artifact-{{ artifact_version }}.installed"
+    state: touch
+    owner: "{{ devtools_user }}"
+    mode: "0644"
+  when: not artifact_version_marker.stat.exists

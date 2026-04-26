@@ -1,0 +1,17 @@
+---
+- name: Download exa artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: exa
+    artifact_version: "{{ exa_version }}"
+    artifact_type: archive
+    artifact_url: "https://github.com/ogham/exa/releases/download/{{ exa_version }}/exa-linux-x86_64-{{ exa_version }}.zip"
+    artifact_creates: bin/exa
+
+- name: Symlink exa binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: exa
+    binary_symlinks:
+      - src: bin/exa
+        dest: exa

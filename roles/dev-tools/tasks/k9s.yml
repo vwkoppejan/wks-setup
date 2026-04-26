@@ -1,0 +1,17 @@
+---
+- name: Download k9s artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: k9s
+    artifact_version: "{{ k9s_version }}"
+    artifact_type: archive
+    artifact_url: "https://github.com/derailed/k9s/releases/download/{{ k9s_version }}/k9s_Linux_amd64.tar.gz"
+    artifact_creates: k9s
+
+- name: Symlink k9s binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: k9s
+    binary_symlinks:
+      - src: k9s
+        dest: k9s

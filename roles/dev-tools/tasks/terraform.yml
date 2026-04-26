@@ -1,0 +1,17 @@
+---
+- name: Download terraform artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: terraform
+    artifact_version: "{{ terraform_version }}"
+    artifact_type: archive
+    artifact_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+    artifact_creates: terraform
+
+- name: Symlink terraform binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: terraform
+    binary_symlinks:
+      - src: terraform
+        dest: terraform

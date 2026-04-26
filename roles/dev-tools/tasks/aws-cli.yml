@@ -1,0 +1,30 @@
+---
+- name: Download aws-cli artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: aws-cli
+    artifact_version: "{{ aws_cli_version }}"
+    artifact_type: archive
+    artifact_url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-{{ aws_cli_version }}.zip"
+    artifact_creates: aws/install
+
+- name: Check aws-cli install version marker
+  stat:
+    path: "{{ software_dir }}/aws-cli/install/.aws-cli-{{ aws_cli_version }}.installed"
+  register: aws_cli_install_marker
+
+- name: Install aws-cli into local bin
+  command: >
+    {{ software_dir }}/aws-cli/aws/install
+    --install-dir {{ software_dir }}/aws-cli/install
+    --bin-dir {{ local_bin_dir }}
+    --update
+  when: not aws_cli_install_marker.stat.exists
+
+- name: Write aws-cli install version marker
+  file:
+    path: "{{ software_dir }}/aws-cli/install/.aws-cli-{{ aws_cli_version }}.installed"
+    state: touch
+    owner: "{{ devtools_user }}"
+    mode: "0644"
+  when: not aws_cli_install_marker.stat.exists

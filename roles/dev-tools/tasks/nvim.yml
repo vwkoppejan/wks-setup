@@ -1,0 +1,17 @@
+---
+- name: Download nvim artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: nvim
+    artifact_version: "{{ nvim_version }}"
+    artifact_type: archive
+    artifact_url: "https://github.com/neovim/neovim/releases/download/v{{ nvim_version }}/nvim-linux64.tar.gz"
+    artifact_creates: "nvim-linux64/bin/nvim"
+
+- name: Symlink nvim binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: nvim
+    binary_symlinks:
+      - src: "nvim-linux64/bin/nvim"
+        dest: nvim

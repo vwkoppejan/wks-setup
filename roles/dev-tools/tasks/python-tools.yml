@@ -1,0 +1,73 @@
+---
+- name: Download pyenv installer
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: pyenv
+    artifact_version: "{{ pyenv_version }}"
+    artifact_type: archive
+    artifact_url: "https://github.com/pyenv/pyenv/archive/refs/tags/{{ pyenv_version }}.tar.gz"
+    artifact_creates: pyenv-{{ pyenv_version | regex_replace('^v', '') }}/bin/pyenv
+    artifact_mode: "0755"
+
+- name: Symlink pyenv binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: pyenv
+    binary_symlinks:
+      - src: pyenv-{{ pyenv_version | regex_replace('^v', '') }}/bin/pyenv
+        dest: pyenv
+
+- name: Compile pyenv dynamic Bash extension
+  shell: "src/configure && make -C src"
+  args:
+    chdir: "{{ software_dir }}/pyenv/pyenv-{{ pyenv_version | regex_replace('^v', '') }}"
+    creates: "{{ software_dir }}/pyenv/pyenv-{{ pyenv_version | regex_replace('^v', '') }}/src/realpath.o"
+
+- name: Download poetry installer
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: poetry
+    artifact_version: "{{ poetry_version }}"
+    artifact_type: binary
+    artifact_url: "https://install.python-poetry.org"
+    artifact_dest: install-poetry.py
+    artifact_mode: "0755"
+
+- name: Install poetry
+  shell: "python3 {{ software_dir }}/poetry/install-poetry.py --version {{ poetry_version }}"
+  environment:
+    POETRY_HOME: "{{ software_dir }}/poetry"
+  args:
+    creates: "{{ software_dir }}/poetry/bin/poetry"
+
+- name: Symlink poetry binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: poetry
+    binary_symlinks:
+      - src: bin/poetry
+        dest: poetry
+
+- name: Setup poetry bash completions
+  shell: "{{ devtools_home }}/.local/bin/poetry completions bash >> ~/.poetry_completions"
+  args:
+    creates: "{{ devtools_home }}/.poetry_completions"
+
+- name: Download uv artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: uv
+    artifact_version: "{{ uv_version }}"
+    artifact_type: archive
+    artifact_url: "https://releases.astral.sh/github/uv/releases/download/{{ uv_version }}/uv-x86_64-unknown-linux-gnu.tar.gz"
+    artifact_creates: uv-x86_64-unknown-linux-gnu/uv
+
+- name: Symlink uv binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: uv
+    binary_symlinks:
+      - src: uv-x86_64-unknown-linux-gnu/uv
+        dest: uv
+      - src: uv-x86_64-unknown-linux-gnu/uvx
+        dest: uvx

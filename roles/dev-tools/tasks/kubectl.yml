@@ -1,0 +1,17 @@
+---
+- name: Download kubectl artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: kubectl
+    artifact_version: "{{ kubectl_version }}"
+    artifact_type: binary
+    artifact_url: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl"
+    artifact_dest: kubectl
+
+- name: Symlink kubectl binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: kubectl
+    binary_symlinks:
+      - src: kubectl
+        dest: kubectl

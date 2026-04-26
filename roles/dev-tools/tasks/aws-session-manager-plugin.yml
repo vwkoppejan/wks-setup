@@ -1,0 +1,53 @@
+---
+- name: Download aws session manager plugin artifacts (Debian)
+  when: ansible_facts['os_family'] == "Debian"
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: aws-session-manager-plugin
+    artifact_version: "{{ aws_session_manager_plugin_version }}"
+    artifact_type: file
+    artifact_url: "https://s3.amazonaws.com/session-manager-downloads/plugin/{{ aws_session_manager_plugin_version }}/ubuntu_64bit/session-manager-plugin.deb"
+    artifact_creates: session-manager-plugin.deb
+
+- name: Download aws session manager plugin artifacts (RedHat)
+  when: ansible_facts['os_family'] == "RedHat"
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: aws-session-manager-plugin
+    artifact_version: "{{ aws_session_manager_plugin_version }}"
+    artifact_type: file
+    artifact_url: "https://s3.amazonaws.com/session-manager-downloads/plugin/{{ aws_session_manager_plugin_version }}/linux_64bit/session-manager-plugin.rpm"
+    artifact_creates: session-manager-plugin.rpm
+
+- name: Extract session-manager-plugin binary from .deb
+  when: ansible_facts['os_family'] == "Debian"
+  shell: |
+    set -e
+    cd "{{ software_dir }}/aws-session-manager-plugin"
+    ar x session-manager-plugin.deb
+    tar xfz data.tar.gz ./usr/local/sessionmanagerplugin/bin/session-manager-plugin
+    cp ./usr/local/sessionmanagerplugin/bin/session-manager-plugin ./session-manager-plugin
+    chmod 0755 ./session-manager-plugin
+    rm -rf data.tar.gz control.tar.gz debian-binary usr
+  args:
+    creates: "{{ software_dir }}/aws-session-manager-plugin/session-manager-plugin"
+
+- name: Extract session-manager-plugin binary from .rpm
+  when: ansible_facts['os_family'] == "RedHat"
+  shell: |
+    set -e
+    cd "{{ software_dir }}/aws-session-manager-plugin"
+    rpm2cpio session-manager-plugin.rpm | cpio -idmv
+    cp ./usr/local/sessionmanagerplugin/bin/session-manager-plugin ./session-manager-plugin
+    chmod 0755 ./session-manager-plugin
+    rm -rf usr etc
+  args:
+    creates: "{{ software_dir }}/aws-session-manager-plugin/session-manager-plugin"
+
+- name: Symlink aws-session-manager-plugin binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: aws-session-manager-plugin
+    binary_symlinks:
+      - src: session-manager-plugin
+        dest: session-manager-plugin

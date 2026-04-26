@@ -1,0 +1,17 @@
+---
+- name: Download kind artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: kind
+    artifact_version: "{{ kind_version }}"
+    artifact_type: binary
+    artifact_url: "https://kind.sigs.k8s.io/dl/{{ kind_version }}/kind-linux-amd64"
+    artifact_dest: kind
+
+- name: Symlink kind binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: kind
+    binary_symlinks:
+      - src: kind
+        dest: kind

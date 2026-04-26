@@ -1,0 +1,44 @@
+---
+- name: Download golang artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: golang
+    artifact_version: "{{ golang_version }}"
+    artifact_type: archive
+    artifact_url: "https://go.dev/dl/go{{ golang_version }}.linux-amd64.tar.gz"
+    artifact_creates: go/bin/go
+
+- name: Symlink golang binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: golang
+    binary_symlinks:
+      - src: go/bin/go
+        dest: go
+      - src: go/bin/gofmt
+        dest: gofmt
+
+- name: Ensure Go module paths are set up
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ devtools_user }}"
+    mode: "0755"
+  loop:
+    - "{{ devtools_home }}/go"
+    - "{{ devtools_home }}/go/bin"
+    - "{{ devtools_home }}/go/pkg"
+    - "{{ devtools_home }}/go/src"
+
+- name: Install gopls
+  command: "{{ devtools_home }}/.local/bin/go install golang.org/x/tools/gopls@{{ gopls_version }}"
+
+- name: Install golangci-lint
+  shell: >
+    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
+    | sh -s -- -b {{ devtools_home }}/go/bin
+  args:
+    executable: /bin/bash
+
+
+

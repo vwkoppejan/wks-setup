@@ -1,0 +1,17 @@
+---
+- name: Download helm artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: helm
+    artifact_version: "{{ helm_version }}"
+    artifact_type: archive
+    artifact_url: "https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz"
+    artifact_creates: linux-amd64/helm
+
+- name: Symlink helm binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: helm
+    binary_symlinks:
+      - src: linux-amd64/helm
+        dest: helm

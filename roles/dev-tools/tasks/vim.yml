@@ -1,0 +1,23 @@
+---
+- name: Download vim source artifacts
+  import_tasks: _download_artifact.yml
+  vars:
+    tool_name: vim
+    artifact_version: "{{ vim_version }}"
+    artifact_type: archive
+    artifact_url: "https://github.com/vim/vim/archive/refs/tags/v{{ vim_version }}.tar.gz"
+    artifact_creates: "vim-{{ vim_version }}"
+
+- name: Compile vim from source
+  shell: "./configure --prefix={{ software_dir }}/vim/vim-{{ vim_version }} && make && make install"
+  args:
+    chdir: "{{ software_dir }}/vim/vim-{{ vim_version }}"
+    creates: "{{ software_dir }}/vim/bin/vim"
+
+- name: Symlink vim binaries
+  import_tasks: _symlink_binaries.yml
+  vars:
+    tool_name: vim
+    binary_symlinks:
+      - src: "vim-{{ vim_version }}/src/vim"
+        dest: vim

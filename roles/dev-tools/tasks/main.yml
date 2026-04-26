@@ -1,0 +1,65 @@
+---
+# User installs
+- name: Ensure software directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ devtools_user }}"
+    mode: '0755'
+  loop:
+    - "{{ software_dir }}"
+    - "{{ local_bin_dir }}"
+  become: false
+
+- name: Install aws-cli
+  import_tasks: aws-cli.yml
+  become: false
+
+- name: Install aws session manager plugin
+  import_tasks: aws-session-manager-plugin.yml
+  # manual extraction to allow installation in user space without root permissions
+  become: false
+
+- name: Install ccat
+  import_tasks: ccat.yml
+  become: false
+
+- name: Install exa
+  import_tasks: exa.yml
+  become: false
+
+- name: Install golang
+  import_tasks: golang.yml
+  become: false
+
+- name: Install helm
+  import_tasks: helm.yml
+  become: false
+
+- name: Install k9s
+  import_tasks: k9s.yml
+  become: false
+
+- name: Install kind
+  import_tasks: kind.yml
+  become: false
+
+- name: Install kubectl
+  import_tasks: kubectl.yml
+  become: false
+
+- name: Install nvim
+  import_tasks: nvim.yml
+  become: false
+
+- name: Install Python tools
+  import_tasks: python-tools.yml
+  become: false
+
+- name: Install terraform
+  import_tasks: terraform.yml
+  become: false
+
+- name: Install vim
+  import_tasks: vim.yml
+  become: false
