@@ -7,6 +7,12 @@
   import_tasks: redhat.yml
   when: ansible_facts['os_family'] == 'RedHat'
 
+- name: Start and enable Docker service
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
 - name: Add user to docker group
   ansible.builtin.user:
     name: "{{ devtools_user }}"
