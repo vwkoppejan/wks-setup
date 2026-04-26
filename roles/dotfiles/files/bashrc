@@ -27,9 +27,6 @@ source ~/.bash_functions
 # set folders
 export SOFTWARE=$HOME/software
 
-# store git credentials in Git's in-memory credential cache
-export GCM_CREDENTIAL_STORE=cache
-
 # GO paths
 export PATH=$PATH:~/go/bin
 
