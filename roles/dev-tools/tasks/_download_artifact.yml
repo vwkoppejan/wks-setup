@@ -26,7 +26,6 @@
     dest: "{{ software_dir }}/{{ tool_name }}"
     remote_src: yes
     owner: "{{ devtools_user }}"
-    creates: "{{ software_dir }}/{{ tool_name }}/{{ artifact_creates }}"
   when:
     - artifact_type == "archive"
     - not artifact_version_marker.stat.exists
