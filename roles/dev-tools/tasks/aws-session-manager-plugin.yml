@@ -25,7 +25,7 @@
     set -e
     cd "{{ software_dir }}/aws-session-manager-plugin"
     ar x session-manager-plugin.deb
-    tar xfz data.tar.gz .
+    tar xfz data.tar.gz
     cp ./usr/local/sessionmanagerplugin/bin/session-manager-plugin ./session-manager-plugin
     chmod 0755 ./session-manager-plugin
     rm -rf data.tar.gz control.tar.gz debian-binary etc lib usr
