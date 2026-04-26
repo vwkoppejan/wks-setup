@@ -1,0 +1,36 @@
+# Ansible
+*.retry
+.vault_pass
+vault_pass.txt
+vault-password*
+*.vault
+host_vars/*/vault.yml
+group_vars/*/vault.yml
+
+# Inventory overrides (keep hosts.ini tracked)
+inventory/hosts_local.ini
+inventory/hosts_private.ini
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.python-version
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp
+/tmp/
