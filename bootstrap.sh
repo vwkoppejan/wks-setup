@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if [ -x "$(command -v apt)" ]; then
     apt update -y
