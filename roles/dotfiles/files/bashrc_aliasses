@@ -1,0 +1,17 @@
+# aliasses
+alias cat='ccat'
+alias jupl='jupyter-lab --no-browser --port=42424'
+alias k='kubectl'
+alias kaf='k apply -f'
+alias ll='eza -lhH'
+alias lla='eza -alhH'
+alias ls='eza --grid -hH'
+alias myhtop='htop -u $USER'
+alias sandbox="source ~/software/python/system/venvs/sandbox/bin/activate"
+alias sb='source ~/.bashrc'
+alias tf='terraform'
+alias tfa='tf apply'
+alias tfp='tf plan'
+alias tma='tmux_attach'
+alias tofp='tmux_open_folder_pane'
+alias tofw='tmux_open_folder_window'

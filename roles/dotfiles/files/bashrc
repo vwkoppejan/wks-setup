@@ -22,7 +22,9 @@ _c_reset="\[$(tput sgr0)\]"
 export PS1="\u@${_c_host}${_PS1_HOST}${_c_reset} ${_c_path}\w ${_c_git}\$(parse_git_branch)${_c_reset}\n$ "
 
 # custom functions
-source ~/.bash_functions
+if [ -f ~/.bash_functions ]; then
+    source ~/.bash_functions
+fi
 
 # set folders
 export SOFTWARE=$HOME/software
@@ -43,19 +45,6 @@ source ~/.poetry_completions
 complete -C ~/software/terraform terraform
 
 # aliasses
-alias cat='ccat'
-alias jupl='jupyter-lab --no-browser --port=42424'
-alias k='kubectl'
-alias kaf='k apply -f'
-alias ll='eza -lhH'
-alias lla='eza -alhH'
-alias ls='eza --grid -hH'
-alias myhtop='htop -u $USER'
-alias sandbox="source ~/software/python/system/venvs/sandbox/bin/activate"
-alias sb='source ~/.bashrc'
-alias tf='terraform'
-alias tfa='tf apply'
-alias tfp='tf plan'
-alias tma='tmux_attach'
-alias tofp='tmux_open_folder_pane'
-alias tofw='tmux_open_folder_window'
+if [ -f ~/.bashrc_aliasses ]; then
+    source ~/.bashrc_aliasses
+fi
