@@ -11,30 +11,48 @@ Ansible playbook to set up a development environment on a fresh Linux or WSL ins
 | `dotfiles` | User configuration: bash settings and tmux config |
 
 
-1. Clone this repo and run the bootstrap script to install `ansible-core`:
+1. Clone this repo and install `ansible-core`:
 
    ```bash
    git clone <repo-url> ansible-wks-setup
    cd ansible-wks-setup
-   sudo bash bootstrap.sh
+   make bootstrap
    ```
 
-2. Run the playbook:
+2. Copy `.env.example` to `.env` and fill in your details:
 
    ```bash
-   ansible-playbook -i inventory/hosts.ini playbook.yml -K  -e "git_name=< your name>" -e "git_email=<your email adress>"
+   cp .env.example .env
    ```
 
-   `-K` prompts for the sudo password, which is required for tasks that need elevated privileges (package installation, Docker setup). The inventory is currently set up for localhost, but can be modified to target remote hosts as needed.
+   `.env` is gitignored. At minimum set your git identity:
 
-## Running by tag
+   ```
+   EXTRA_VARS=-e "git_name=Your Name" -e "git_email=you@example.com"
+   ```
 
-To run only a specific role, use `--tags`:
+3. Run the playbook:
+
+   ```bash
+   make run        # full playbook (prompts for sudo)
+   ```
+
+## Make targets
+
+| Target | Description |
+|--------|-------------|
+| `make run` | Full playbook (prompts for sudo via `-K`) |
+| `make dev-deps` | System packages + Docker only (requires sudo) |
+| `make dev-tools` | User-space tools only |
+| `make dotfiles` | Dotfiles only |
+| `make check` | Dry-run the full playbook |
+| `make syntax` | Validate playbook syntax |
+| `make bootstrap` | Install `ansible-core` on a fresh machine |
+
+Tags can also be passed at runtime to override `run`:
 
 ```bash
-ansible-playbook -i inventory/hosts.ini playbook.yml -K --tags dev-deps
-ansible-playbook -i inventory/hosts.ini playbook.yml --tags dev-tools
-ansible-playbook -i inventory/hosts.ini playbook.yml --tags dotfiles -e "git_name=< your name>" -e "git_email=<your email adress>"
+make run TAGS=dev-tools,dotfiles
 ```
 
-Please note that the `dev-tools` role requires the `dev-deps` role to be run first, as it depends on some of the packages installed by `dev-deps`. `dotfiles` sets up config but bashrc entries expect the tools to be present, so it should also be run after `dev-deps` and `dev-tools`.
+> **Note:** `dev-tools` depends on packages from `dev-deps`. Run `make dev-deps` first on a fresh machine, then `make dev-tools` and `make dotfiles`.
