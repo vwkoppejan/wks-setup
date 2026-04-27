@@ -1,0 +1,45 @@
+---
+- name: Ensure bootstrap venv parent directory exists
+  ansible.builtin.file:
+    path: "{{ bootstrap_venv_dir | dirname }}"
+    state: directory
+    owner: "{{ devtools_user }}"
+    mode: "0755"
+
+- name: Create bootstrap venv from system Python
+  ansible.builtin.command:
+    cmd: "python3 -m venv {{ bootstrap_venv_dir }}"
+    creates: "{{ bootstrap_venv_dir }}/bin/python"
+
+- name: Upgrade pip inside bootstrap venv
+  ansible.builtin.pip:
+    name:
+      - pip
+      - setuptools
+      - wheel
+    state: latest
+    virtualenv: "{{ bootstrap_venv_dir }}"
+
+- name: Install pip packages into bootstrap venv
+  ansible.builtin.pip:
+    name: "{{ item.name }}=={{ item.version }}"
+    state: present
+    virtualenv: "{{ bootstrap_venv_dir }}"
+  loop: "{{ pip_packages }}"
+  loop_control:
+    label: "{{ item.name }}=={{ item.version }}"
+
+- name: Symlink bootstrap venv binaries into local bin
+  ansible.builtin.file:
+    src: "{{ bootstrap_venv_dir }}/bin/{{ item }}"
+    dest: "{{ local_bin_dir }}/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - ansible
+    - ansible-playbook
+    - ansible-galaxy
+    - ansible-config
+    - ansible-doc
+    - ansible-lint
+    - molecule

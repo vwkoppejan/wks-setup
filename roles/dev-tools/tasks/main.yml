@@ -11,6 +11,10 @@
     - "{{ local_bin_dir }}"
   become: false
 
+- name: Install pip packages into bootstrap venv
+  import_tasks: pip.yml
+  become: false
+
 - name: Install aws-cli
   import_tasks: aws-cli.yml
   become: false
