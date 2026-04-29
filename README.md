@@ -7,7 +7,7 @@ Ansible playbook to set up a development environment on a fresh Linux or WSL ins
 | Role | Description |
 |------|-------------|
 | `dev-deps` | System-wide installs requiring root: common utility packages and Docker |
-| `dev-tools` | User-space developer tools: kubectl, kind, k9s, helm, AWS CLI, OCI CLI, oci Terraform, Go (+ gopls, golangci-lint), Python (pyenv, poetry, uv), exa, ccat |
+| `dev-tools` | User-space developer tools: kubectl, kind, k9s, helm, AWS CLI, ,Terraform, Go (+ gopls, golangci-lint), Python (pyenv, poetry, uv), eza, ccat |
 | `dotfiles` | User configuration: bash settings and tmux config |
 
 

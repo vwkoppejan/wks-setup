@@ -1,7 +1,7 @@
 ---
-- name: Touch huslog file
+- name: Touch hushlogin file
   file:
-    path: "{{ ansible_env.HOME }}/.huslogin"
+    path: "{{ ansible_env.HOME }}/.hushlogin"
     state: touch
     owner: "{{ ansible_user_id }}"
     mode: "0644"

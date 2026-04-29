@@ -28,8 +28,8 @@
   import_tasks: ccat.yml
   become: false
 
-- name: Install exa
-  import_tasks: exa.yml
+- name: Install eza
+  import_tasks: eza.yml
   become: false
 
 - name: Install golang
