@@ -24,8 +24,6 @@ The skeleton is sound. The issues below are mostly hygiene, portability, and sec
 
 ### 2.1 High priority
 
-- [ ] **`bootstrap.sh` lacks `set -euo pipefail`.** Shebang is fine (`#!/bin/bash`), but on a failing `apt update -y` the script still proceeds to `apt install`, masking the real error. Add `set -euo pipefail` at the top and consider switching the shebang to `#!/usr/bin/env bash` for portability. See [bootstrap.sh](bootstrap.sh#L1).
-- [ ] **`bootstrap.sh` is not run as root but invokes `apt`/`dnf` without `sudo`.** It will silently fail on a fresh machine unless invoked as root. Either prepend `sudo` (guarded with `[[ $EUID -ne 0 ]]`) or document that `make bootstrap` must be run as root.
 - [ ] **Empty file:** [`roles/dev-tools/tasks/bash.yml`](roles/dev-tools/tasks/bash.yml) is empty. Either implement it or delete it — dead files invite confusion.
 - [ ] **`x86_64` hard-coded in several roles.** [`aws-cli.yml`](roles/dev-tools/tasks/aws-cli.yml#L8) and [`python-tools.yml`](roles/dev-tools/tasks/python-tools.yml) use `linux-x86_64`/`x86_64-unknown-linux-gnu`. The Docker role already derives `docker_apt_arch` from `ansible_architecture` — apply the same pattern to all artifact URLs so arm64 (Apple Silicon, Graviton, Raspberry Pi, arm WSL) works.
 - [ ] **`golang.yml` "Install gopls" / "Install golangci-lint" tasks are not idempotent** and have no `creates:` guard — they run on every play. Add `creates:` args or `changed_when` guards. Also: `golangci-lint`'s `install.sh | sh` pattern pipes a remote script into a shell — pin to a tagged version, not `master`.
@@ -127,7 +125,8 @@ Every `command:`/`shell:` task and every `file:`/`pip:` task with non-default `s
 - [x] ~~`pip --user` install of `ansible-core` shadows the apt copy~~ — replaced by a dedicated venv at `{{ bootstrap_venv_dir }}`.
 - [x] ~~`pip` interpreter not pinned~~ — `virtualenv:` parameter forces the venv's pip.
 - [x] ~~Library deps (`jmespath`, `netaddr`, `passlib`) installed where Ansible cannot see them~~ — they live in the venv alongside `ansible-core`.
-
+- [x] ~~`bootstrap.sh` lacks `set -euo pipefail`.~~
+- [x] ~~`bootstrap.sh` is not run as root but invokes `apt`/`dnf` without `sudo`.~~
 ---
 
 ## 3. Extending to a Devcontainer
