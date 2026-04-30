@@ -45,6 +45,6 @@ source ~/.poetry_completions
 complete -C ~/software/terraform terraform
 
 # aliasses
-if [ -f ~/.bashrc_aliasses ]; then
-    source ~/.bashrc_aliasses
+if [ -f ~/.bash_aliasses ]; then
+    source ~/.bash_aliasses
 fi
