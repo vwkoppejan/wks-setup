@@ -1,0 +1,42 @@
+---
+- name: Set git user name
+  community.general.git_config:
+    name: user.name
+    value: "{{ git_name }}"
+    scope: global
+
+- name: Set git user email
+  community.general.git_config:
+    name: user.email
+    value: "{{ git_email }}"
+    scope: global
+
+- name: Set git core editor
+  community.general.git_config:
+    name: core.editor
+    value: vim
+    scope: global
+
+- name: Set git excludesfile
+  community.general.git_config:
+    name: core.excludesfile
+    value: "{{ ansible_env.HOME }}/.gitignore"
+    scope: global
+
+- name: Set git credential helper
+  community.general.git_config:
+    name: credential.helper
+    value: cache --timeout=86400
+    scope: global
+
+- name: Set git alias lol
+  community.general.git_config:
+    name: alias.lol
+    value: "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    scope: global
+
+- name: Set git alias cm
+  community.general.git_config:
+    name: alias.cm
+    value: commit -m
+    scope: global

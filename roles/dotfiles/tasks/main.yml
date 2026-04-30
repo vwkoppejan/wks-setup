@@ -26,12 +26,8 @@
     - "bash_aliasses"
   become: false
 
-- name: Template gitconfig
-  template:
-    src: gitconfig.j2
-    dest: "{{ ansible_env.HOME }}/.gitconfig"
-    owner: "{{ ansible_user_id }}"
-    mode: "0644"
+- name: Configure git settings
+  import_tasks: git.yml
   become: false
 
 - name: Append user settings to bashrc

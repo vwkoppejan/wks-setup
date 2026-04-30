@@ -34,6 +34,9 @@ check:
 syntax:
 	ansible-playbook $(ANSIBLE_FLAGS) --syntax-check $(PLAYBOOK)
 
+galaxy:
+	ansible-galaxy install -r requirements.yml
+
 ## bootstrap: install ansible-core on a fresh machine
 bootstrap:
 	bash bootstrap.sh
